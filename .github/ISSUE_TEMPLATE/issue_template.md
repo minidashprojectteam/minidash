@@ -1,3 +1,11 @@
+---
+name: "기본 태스크 양식"
+about: "이슈를 생성할 때 사용하는 기본 템플릿입니다."
+title: "[TASK] "
+labels: ''
+assignees: ''
+---
+
 # minidash issue 양식
 
 ## 이슈 제목
