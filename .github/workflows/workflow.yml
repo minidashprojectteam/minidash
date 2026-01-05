@@ -1,0 +1,43 @@
+name: Pull Request Check
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const pull_request = context.payload.pull_request;
+
+            if (!pull_request) {
+              console.log("No pull request found in context.");
+              return;
+            }
+
+            const body = pull_request.body;
+
+            // 본문이 비어있거나 10자 미만인 경우
+            if (!body || body.trim().length < 10) {
+              // 1. 코멘트 작성
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pull_request.number,
+                body: "해당 PR은 가이드라인을 준수하지 않았습니다. 내용을 충실히 작성해서 다시 PR 요청을 해주세요 😊"
+              });
+
+              // 2. PR 닫기
+              await github.rest.pulls.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: pull_request.number,
+                state: "closed"
+              });
+            }
