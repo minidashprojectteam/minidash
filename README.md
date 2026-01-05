@@ -14,7 +14,10 @@ npm install minidash
 
 ## 사용법
 ```javascript
-const minidash = require('minidash');
+export { checkedArr } from minidash;
+
+checkedArr([1, 2, 3]); // true
+checkedArr("not an array"); // false
 ```
 
 ## 기여하기
