@@ -23,14 +23,15 @@ jobs:
 
             const body = pull_request.body;
 
-            // 본문이 비어있거나 10자 미만인 경우
-            if (!body || body.trim().length < 10) {
+            const message = "아래 가입 내용을 작성해주시고 해당 라인을 삭제해주세요."
+
+            if (!body || body.includes(message)) {
               // 1. 코멘트 작성
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: pull_request.number,
-                body: "해당 PR은 가이드라인을 준수하지 않았습니다. 내용을 충실히 작성해서 다시 PR 요청을 해주세요 😊"
+                body: "해당 PR은 가이드라인을 준수하지 않았습니다. 내용을 충실히 작성해서 다시 PR 요청을 해주세요.😊"
               });
 
               // 2. PR 닫기
